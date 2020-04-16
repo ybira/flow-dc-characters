@@ -2,8 +2,12 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-character',
-  templateUrl: './character.component.html',
-  styleUrls: ['./character.component.css']
+  template: `<p>I am Batman!</p>`,
+  styles: [`
+    p {
+      color: grey;
+    }
+  `]
 })
 export class CharacterComponent implements OnInit {
 
