@@ -5,14 +5,20 @@ import { Component, OnInit } from '@angular/core';
   template: `
     <app-character></app-character>
     <app-character></app-character>
+    <button class="btn btn-primary" [disabled]="isAddAllowed()">
+      Add new character
+    </button>
   `,
   styles: [``]
 })
 export class CharactersComponent implements OnInit {
+  public disallowAdd = false;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  public isAddAllowed() {
+    return this.disallowAdd;
   }
-
 }
