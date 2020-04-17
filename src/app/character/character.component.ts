@@ -1,39 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-character',
   template: `
-    <p
-      [ngStyle]="{ backgroundColor: getColor() }"
-      [ngClass]="{ white: getColor() === 'blue' }"
-    >
-      {{ 'Name:' }} {{ name }} Age: {{ 10 }} {{ showAffiliation() }}
-    </p>
+    <div class="panel panel-default" [ngClass]="alignment">
+      <div class="panel-body">
+        <p>Name: {{ name }}</p>
+        <p>Affiliation: {{ group }}</p>
+      </div>
+    </div>
   `,
   styles: [
     `
-      .white {
+      .good {
+        background-color: #3a96f2;
         color: white;
+      }
+
+      .bad {
+        background-color: #f23a3a;
       }
     `
   ]
 })
 export class CharacterComponent implements OnInit {
-  public name = 'Batman';
-  public affiliation = 'Justice League';
-  public alignment;
+  @Input() public name: string;
+  @Input('affiliation') public group: string;
+  @Input() public alignment: string;
 
-  constructor() {
-    this.alignment = Math.random() > 0.5 ? 'good' : 'bad';
-  }
+  constructor() {}
 
   ngOnInit(): void {}
-
-  public showAffiliation(): string {
-    return this.affiliation;
-  }
-
-  public getColor() {
-    return this.alignment === 'good' ? 'blue' : 'red';
-  }
 }
