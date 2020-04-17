@@ -3,8 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-characters',
   template: `
-    <app-character></app-character>
-    <app-character></app-character>
+    <app-character *ngFor="let character of characters"></app-character>
     <p>{{ currentName }}</p>
     <input type="text" [(ngModel)]="name" />
     <p *ngIf="!name; else press">Please enter a name!</p>
@@ -25,6 +24,14 @@ import { Component, OnInit } from '@angular/core';
   styles: [``]
 })
 export class CharactersComponent implements OnInit {
+  public characters: {
+    name: string;
+    affiliation: string;
+    alignment: string;
+  }[] = [
+    { name: 'Batman', affiliation: 'Justice League', alignment: 'true' },
+    { name: 'Joker', affiliation: 'Injustice League', alignment: 'bad' }
+  ];
   public disallowAdd = false;
   public name: string;
   public currentName: string;
