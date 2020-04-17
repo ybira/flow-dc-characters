@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -6,15 +7,9 @@ import { CharacterComponent } from './character/character.component';
 import { CharactersComponent } from './characters/characters.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    CharacterComponent,
-    CharactersComponent
-  ],
-  imports: [
-    BrowserModule
-  ],
+  declarations: [AppComponent, CharacterComponent, CharactersComponent],
+  imports: [BrowserModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
