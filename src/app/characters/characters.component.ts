@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-characters',
   template: `
+    <app-character></app-character>
+    <app-character></app-character>
     <p>{{ currentName }}</p>
     <input type="text" [(ngModel)]="name" />
     <p *ngIf="!name; else press">Please enter a name!</p>
