@@ -6,8 +6,12 @@ import { Component, OnInit } from '@angular/core';
     <app-character></app-character>
     <app-character></app-character>
     <p>{{ name }}</p>
-    <input type="text" (input)="onAdd($event)" />
-    <button class="btn btn-primary" [disabled]="isAddAllowed()">
+    <input type="text" [(ngModel)]="name" />
+    <button
+      class="btn btn-primary"
+      [disabled]="isAddAllowed()"
+      (click)="onChangeInput()"
+    >
       Add new character
     </button>
     <button class="btn btn-danger" (click)="disallowAdd = !disallowAdd">
@@ -30,5 +34,9 @@ export class CharactersComponent implements OnInit {
 
   public onAdd(event: any) {
     this.name = event.target.value;
+  }
+
+  public onChangeInput() {
+    this.name = 'Superman';
   }
 }
