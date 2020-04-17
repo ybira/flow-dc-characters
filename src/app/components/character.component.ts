@@ -1,17 +1,21 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Character } from '../model/character.model';
 
 @Component({
   selector: 'app-character',
   template: `
-    <div class="panel panel-default" [ngClass]="alignment">
+    <div class="panel panel-default" [ngClass]="character.alignment">
       <div class="panel-body">
-        <p>Name: {{ name }}</p>
-        <p>Affiliation: {{ group }}</p>
+        <h4>{{ character.name }}</h4>
       </div>
     </div>
   `,
   styles: [
     `
+      h4 {
+        text-align: center;
+      }
+
       .good {
         background-color: #3a96f2;
         color: white;
@@ -24,9 +28,7 @@ import { Component, Input, OnInit } from '@angular/core';
   ]
 })
 export class CharacterComponent implements OnInit {
-  @Input() public name: string;
-  @Input('affiliation') public group: string;
-  @Input() public alignment: string;
+  @Input() public character: Character;
 
   constructor() {}
 
