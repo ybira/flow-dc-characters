@@ -17,21 +17,11 @@ import { Address, Alignment, Character } from '../model/character.model';
         </div>
         <div class="form-group">
           <label class="control-label" for="planet">Planet</label>
-          <input
-            type="text"
-            class="form-control"
-            id="planet"
-            [(ngModel)]="character.address.planet"
-          />
+          <input type="text" class="form-control" id="planet" #planet />
         </div>
         <div class="form-group">
           <label class="control-label" for="city">City</label>
-          <input
-            type="text"
-            class="form-control"
-            id="city"
-            [(ngModel)]="character.address.city"
-          />
+          <input type="text" class="form-control" id="city" #city />
         </div>
         <div class="form-group">
           <label class="control-label" for="affiliation">Affiliation</label>
@@ -70,7 +60,11 @@ import { Address, Alignment, Character } from '../model/character.model';
             New Skill
           </button>
         </div>
-        <button class="btn btn-primary" type="submit" (click)="onAdd()">
+        <button
+          class="btn btn-primary"
+          type="submit"
+          (click)="onAdd(planet, city)"
+        >
           Add New Character
         </button>
         <button class="btn btn-primary" type="button" (click)="onReset()">
@@ -104,7 +98,8 @@ export class AddCharacterComponent {
   public currentSkill: string;
   constructor() {}
 
-  public onAdd() {
+  public onAdd(planet: HTMLInputElement, city: HTMLInputElement) {
+    this.character.address = { planet: planet.value, city: city.value };
     this.characterAdded.emit(this.character);
     this.onReset();
   }
