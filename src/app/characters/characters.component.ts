@@ -3,11 +3,12 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-characters',
   template: `
-    <app-character></app-character>
-    <app-character></app-character>
     <p>{{ currentName }}</p>
     <input type="text" [(ngModel)]="name" />
-    <p *ngIf="!currentName">Please enter a name!</p>
+    <p *ngIf="!name; else press">Please enter a name!</p>
+    <ng-template #press>
+      <p>Press add to add the name!</p>
+    </ng-template>
     <button
       class="btn btn-primary"
       [disabled]="isAddAllowed()"
@@ -36,5 +37,6 @@ export class CharactersComponent implements OnInit {
 
   public onAdd() {
     this.currentName = this.name;
+    this.name = null;
   }
 }
