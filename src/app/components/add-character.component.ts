@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Address, Alignment, Character } from '../model/character.model';
 
 @Component({
@@ -93,6 +93,9 @@ import { Address, Alignment, Character } from '../model/character.model';
   ]
 })
 export class AddCharacterComponent {
+  @Output() public characterAdded: EventEmitter<Character> = new EventEmitter<
+    Character
+  >();
   public alignments: Alignment[] = [Alignment.GOOD, Alignment.BAD];
   public character: Character = {
     skills: [],
@@ -102,7 +105,8 @@ export class AddCharacterComponent {
   constructor() {}
 
   public onAdd() {
-    console.log(this.character);
+    this.characterAdded.emit(this.character);
+    this.onReset();
   }
 
   public onAddSkill() {

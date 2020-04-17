@@ -23,4 +23,8 @@ export class AppComponent {
       skills: ['tech', 'intellect']
     }
   ];
+
+  public onAdd(character: Character) {
+    this.characters.push(character);
+  }
 }
