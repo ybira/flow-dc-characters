@@ -5,12 +5,13 @@ import { Component, OnInit } from '@angular/core';
   template: `
     <app-character></app-character>
     <app-character></app-character>
-    <p>{{ name }}</p>
+    <p>{{ currentName }}</p>
     <input type="text" [(ngModel)]="name" />
+    <p *ngIf="!currentName">Please enter a name!</p>
     <button
       class="btn btn-primary"
       [disabled]="isAddAllowed()"
-      (click)="onChangeInput()"
+      (click)="onAdd()"
     >
       Add new character
     </button>
@@ -23,6 +24,7 @@ import { Component, OnInit } from '@angular/core';
 export class CharactersComponent implements OnInit {
   public disallowAdd = false;
   public name: string;
+  public currentName: string;
 
   constructor() {}
 
@@ -32,11 +34,7 @@ export class CharactersComponent implements OnInit {
     return this.disallowAdd;
   }
 
-  public onAdd(event: any) {
-    this.name = event.target.value;
-  }
-
-  public onChangeInput() {
-    this.name = 'Superman';
+  public onAdd() {
+    this.currentName = this.name;
   }
 }
