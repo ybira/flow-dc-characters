@@ -4,7 +4,11 @@ import { Character } from '../model/character.model';
 @Component({
   selector: 'app-character',
   template: `
-    <div class="panel panel-default" [ngClass]="character.alignment">
+    <div
+      class="panel panel-default"
+      [ngClass]="character.alignment"
+      appHighlight
+    >
       <div class="panel-body">
         <ng-content></ng-content>
       </div>
