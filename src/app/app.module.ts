@@ -9,6 +9,7 @@ import { CharactersComponent } from './components/characters.component';
 import { LifecyclesComponent } from './components/lifecycles.component';
 import { AlignmentDirective } from './directives/alignment.directive';
 import { HighlightDirective } from './directives/highlight.directive';
+import { UnlessDirective } from './directives/unless.directive';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { HighlightDirective } from './directives/highlight.directive';
     AddCharacterComponent,
     LifecyclesComponent,
     HighlightDirective,
-    AlignmentDirective
+    AlignmentDirective,
+    UnlessDirective
   ],
   imports: [BrowserModule, FormsModule],
   providers: [],

@@ -10,6 +10,7 @@ import { Character } from '../model/character.model';
       appHighlight
     >
       <div class="panel-body">
+        <p *appUnless="character.alignment === 'good'">BEWARE!</p>
         <ng-content></ng-content>
       </div>
     </div>
