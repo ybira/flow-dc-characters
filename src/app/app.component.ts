@@ -24,7 +24,18 @@ export class AppComponent {
     }
   ];
 
+  public text = 'Some Text';
+  public isDisabled = false;
+
   public onAdd(character: Character) {
     this.characters.push(character);
+  }
+
+  public onChange() {
+    this.text = 'Some new text';
+  }
+
+  public onDisable() {
+    this.isDisabled = true;
   }
 }

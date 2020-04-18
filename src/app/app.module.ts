@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 import { AddCharacterComponent } from './components/add-character.component';
 import { CharacterComponent } from './components/character.component';
 import { CharactersComponent } from './components/characters.component';
+import { LifecyclesComponent } from './components/lifecycles.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CharacterComponent,
     CharactersComponent,
-    AddCharacterComponent
+    AddCharacterComponent,
+    LifecyclesComponent
   ],
   imports: [BrowserModule, FormsModule],
   providers: [],
