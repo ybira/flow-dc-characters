@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { Address, Alignment, Character } from '../model/character.model';
 
 @Component({
@@ -8,12 +14,7 @@ import { Address, Alignment, Character } from '../model/character.model';
       <div class="panel-body">
         <div class="form-group">
           <label class="control-label" for="name">Name</label>
-          <input
-            type="text"
-            class="form-control"
-            id="name"
-            [(ngModel)]="character.name"
-          />
+          <input type="text" class="form-control" id="name" #name />
         </div>
         <div class="form-group">
           <label class="control-label" for="planet">Planet</label>
@@ -90,16 +91,24 @@ export class AddCharacterComponent {
   @Output() public characterAdded: EventEmitter<Character> = new EventEmitter<
     Character
   >();
+
   public alignments: Alignment[] = [Alignment.GOOD, Alignment.BAD];
   public character: Character = {
     skills: [],
     address: {} as Address
   } as Character;
   public currentSkill: string;
+
+  @ViewChild('name', { static: true }) public name: ElementRef;
+
   constructor() {}
 
   public onAdd(planet: HTMLInputElement, city: HTMLInputElement) {
-    this.character.address = { planet: planet.value, city: city.value };
+    this.character.name = this.name.nativeElement.value;
+    this.character.address = {
+      planet: planet.value,
+      city: city.value
+    };
     this.characterAdded.emit(this.character);
     this.onReset();
   }
