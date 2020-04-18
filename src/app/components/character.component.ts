@@ -6,16 +6,12 @@ import { Character } from '../model/character.model';
   template: `
     <div class="panel panel-default" [ngClass]="character.alignment">
       <div class="panel-body">
-        <h4>{{ character.name }}</h4>
+        <ng-content></ng-content>
       </div>
     </div>
   `,
   styles: [
     `
-      h4 {
-        text-align: center;
-      }
-
       .good {
         background-color: #3a96f2;
         color: white;

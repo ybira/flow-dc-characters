@@ -8,7 +8,9 @@ import { Character } from '../model/character.model';
       <app-character
         *ngFor="let character of characters"
         [character]="character"
-      ></app-character>
+      >
+        <h4>{{ character.name }}</h4>
+      </app-character>
     </div>
   `,
   styles: [
@@ -22,6 +24,10 @@ import { Character } from '../model/character.model';
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
+      }
+
+      h4 {
+        text-align: center;
       }
     `
   ]
