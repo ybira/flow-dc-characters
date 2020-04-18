@@ -3,12 +3,17 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-character',
   template: `
-    <p
+    <div
       [ngStyle]="{ backgroundColor: getColor() }"
       [ngClass]="{ white: getColor() === 'blue' }"
     >
       {{ 'Name:' }} {{ name }} Age: {{ 10 }} {{ showAffiliation() }}
-    </p>
+      <div [ngSwitch]="alignment">
+        <p *ngSwitchCase="'good'">He/She is Good</p>
+        <p *ngSwitchCase="'bad'">He/She is Bad</p>
+        <p *ngSwitchDefault>Unknown</p>
+      </div>
+    </div>
   `,
   styles: [
     `
