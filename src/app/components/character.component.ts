@@ -6,7 +6,7 @@ import { Character } from '../model/character.model';
   template: `
     <div
       class="panel panel-default"
-      [ngClass]="character.alignment"
+      [appAlignment]="character.alignment === 'good'"
       appHighlight
     >
       <div class="panel-body">
@@ -14,18 +14,7 @@ import { Character } from '../model/character.model';
       </div>
     </div>
   `,
-  styles: [
-    `
-      .good {
-        background-color: #3a96f2;
-        color: white;
-      }
-
-      .bad {
-        background-color: #f23a3a;
-      }
-    `
-  ]
+  styles: [``]
 })
 export class CharacterComponent implements OnInit {
   @Input() public character: Character;
