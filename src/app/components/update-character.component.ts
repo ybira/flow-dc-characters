@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { OnCanDeactivate } from '../can-deactivate.guard';
+import { OnCanDeactivate } from '../guards/can-deactivate.guard';
 import { Alignment, Character } from '../model/character.model';
 import { CharactersService } from '../services/characters.service';
 
@@ -105,8 +105,7 @@ export class UpdateCharacterComponent implements OnInit, OnCanDeactivate {
   public alignments: Alignment[] = [Alignment.GOOD, Alignment.BAD];
   public character: Character;
   public currentSkill: string;
-
-  public allowNavigate;
+  public allowNavigate: boolean;
 
   constructor(
     private charactersService: CharactersService,
@@ -116,8 +115,8 @@ export class UpdateCharacterComponent implements OnInit, OnCanDeactivate {
 
   ngOnInit() {
     this.allowNavigate = false;
-    this.route.params.subscribe(params => {
-      this.character = this.charactersService.fetchCharacter(+params.id);
+    this.route.data.subscribe(data => {
+      this.character = data.character;
     });
   }
 

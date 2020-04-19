@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './auth.guard';
-import { CanDeactivateGuard } from './can-deactivate.guard';
+import { AuthGuard } from './guards/auth.guard';
+import { CanDeactivateGuard } from './guards/can-deactivate.guard';
 import { AddCharacterComponent } from './components/add-character.component';
 import { CharacterDetailsComponent } from './components/character-details.component';
 import { CharactersComponent } from './components/characters.component';
 import { LoginComponent } from './components/login.component';
 import { UpdateCharacterComponent } from './components/update-character.component';
 import { Role } from './model/user.model';
-import { RoleGuard } from './role.guard';
+import { RoleGuard } from './guards/role.guard';
+import { CharacterResolver } from './resolvers/character.resolver';
 
 const routes: Routes = [
   {
@@ -35,6 +36,7 @@ const routes: Routes = [
       {
         path: ':id',
         component: CharacterDetailsComponent,
+        resolve: { character: CharacterResolver },
         data: { roles: [Role.EDITOR, Role.ADMIN] }
       }
     ]
@@ -44,6 +46,7 @@ const routes: Routes = [
     component: UpdateCharacterComponent,
     canActivate: [AuthGuard, RoleGuard],
     canDeactivate: [CanDeactivateGuard],
+    resolve: { character: CharacterResolver },
     data: { roles: [Role.EDITOR, Role.ADMIN] }
   },
   {
