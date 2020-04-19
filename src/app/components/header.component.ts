@@ -9,8 +9,12 @@ import { Component, OnInit } from '@angular/core';
           <a class="navbar-brand" routerLink="/">Heroes & Villains</a>
         </div>
         <ul class="nav navbar-nav">
-          <li class="active"><a routerLink="characters">Character List</a></li>
-          <li><a [routerLink]="['/add-character']">Add Character</a></li>
+          <li routerLinkActive="active">
+            <a routerLink="characters">Character List</a>
+          </li>
+          <li routerLinkActive="active">
+            <a [routerLink]="['/add-character']">Add Character</a>
+          </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li><a href="#">Logged in as: Test Elek (LOGOUT)</a></li>
