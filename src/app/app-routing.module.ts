@@ -3,12 +3,18 @@ import { RouterModule, Routes } from '@angular/router';
 import { AddCharacterComponent } from './components/add-character.component';
 import { CharacterDetailsComponent } from './components/character-details.component';
 import { CharactersComponent } from './components/characters.component';
+import { LoginComponent } from './components/login.component';
 import { UpdateCharacterComponent } from './components/update-character.component';
 
 const routes: Routes = [
   {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
     path: '',
-    component: CharactersComponent
+    redirectTo: '/characters',
+    pathMatch: 'full'
   },
   {
     path: 'characters/new',

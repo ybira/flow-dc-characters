@@ -11,6 +11,7 @@ import { CharactersComponent } from './components/characters.component';
 import { FilterComponent } from './components/filter.component';
 import { HeaderComponent } from './components/header.component';
 import { LifecyclesComponent } from './components/lifecycles.component';
+import { LoginComponent } from './components/login.component';
 import { UpdateCharacterComponent } from './components/update-character.component';
 import { AlignmentDirective } from './directives/alignment.directive';
 import { HighlightDirective } from './directives/highlight.directive';
@@ -29,7 +30,8 @@ import { UnlessDirective } from './directives/unless.directive';
     HeaderComponent,
     UpdateCharacterComponent,
     FilterComponent,
-    CharacterDetailsComponent
+    CharacterDetailsComponent,
+    LoginComponent
   ],
   imports: [BrowserModule, FormsModule, AppRoutingModule],
   providers: [],
