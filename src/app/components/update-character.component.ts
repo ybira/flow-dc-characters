@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Alignment, Character } from '../model/character.model';
 import { CharactersService } from '../services/characters.service';
 
@@ -104,15 +104,16 @@ export class UpdateCharacterComponent implements OnInit {
   public character: Character;
   public currentSkill: string;
 
-  public id = 1;
-
   constructor(
     private charactersService: CharactersService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.character = this.charactersService.fetchCharacter(this.id);
+    this.route.params.subscribe(params => {
+      this.character = this.charactersService.fetchCharacter(+params.id);
+    });
   }
 
   public onAddSkill() {
