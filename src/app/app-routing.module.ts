@@ -6,6 +6,8 @@ import { CharacterDetailsComponent } from './components/character-details.compon
 import { CharactersComponent } from './components/characters.component';
 import { LoginComponent } from './components/login.component';
 import { UpdateCharacterComponent } from './components/update-character.component';
+import { Role } from './model/user.model';
+import { RoleGuard } from './role.guard';
 
 const routes: Routes = [
   {
@@ -19,23 +21,28 @@ const routes: Routes = [
   },
   {
     path: 'characters/new',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: [Role.ADMIN] },
     component: AddCharacterComponent
   },
   {
     path: 'characters',
     component: CharactersComponent,
     canActivate: [AuthGuard],
+    canActivateChild: [RoleGuard],
     children: [
       {
         path: ':id',
-        component: CharacterDetailsComponent
+        component: CharacterDetailsComponent,
+        data: { roles: [Role.EDITOR, Role.ADMIN] }
       }
     ]
   },
   {
     path: 'characters/edit/:id',
-    component: UpdateCharacterComponent
+    component: UpdateCharacterComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: [Role.EDITOR, Role.ADMIN] }
   },
   {
     path: '**',
