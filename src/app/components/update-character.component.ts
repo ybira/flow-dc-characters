@@ -1,24 +1,40 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Address, Alignment, Character } from '../model/character.model';
+import { Alignment, Character } from '../model/character.model';
 import { CharactersService } from '../services/characters.service';
 
 @Component({
-  selector: 'app-add-character',
+  selector: 'app-update-character',
   template: `
     <div class="panel panel-default">
       <div class="panel-body">
         <div class="form-group">
           <label class="control-label" for="name">Name</label>
-          <input type="text" class="form-control" id="name" #name />
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            [(ngModel)]="character.name"
+            disabled
+          />
         </div>
         <div class="form-group">
           <label class="control-label" for="planet">Planet</label>
-          <input type="text" class="form-control" id="planet" #planet />
+          <input
+            type="text"
+            class="form-control"
+            id="planet"
+            [(ngModel)]="character.address.planet"
+          />
         </div>
         <div class="form-group">
           <label class="control-label" for="city">City</label>
-          <input type="text" class="form-control" id="city" #city />
+          <input
+            type="text"
+            class="form-control"
+            id="city"
+            [(ngModel)]="character.address.city"
+          />
         </div>
         <div class="form-group">
           <label class="control-label" for="affiliation">Affiliation</label>
@@ -57,20 +73,15 @@ import { CharactersService } from '../services/characters.service';
             New Skill
           </button>
         </div>
-        <button
-          class="btn btn-primary"
-          type="submit"
-          (click)="onAdd(planet, city)"
-        >
-          Add New Character
+        <button class="btn btn-primary" type="submit" (click)="onUpdate()">
+          Update
         </button>
         <button
           class="btn btn-primary"
           type="button"
-          [routerLink]="['../../characters']"
-          (click)="onReset()"
+          [routerLink]="['/characters']"
         >
-          Reset
+          Cancel
         </button>
       </div>
     </div>
@@ -88,30 +99,20 @@ import { CharactersService } from '../services/characters.service';
     `
   ]
 })
-export class AddCharacterComponent {
+export class UpdateCharacterComponent implements OnInit {
   public alignments: Alignment[] = [Alignment.GOOD, Alignment.BAD];
-  public character: Character = {
-    skills: [],
-    address: {} as Address
-  } as Character;
+  public character: Character;
   public currentSkill: string;
 
-  @ViewChild('name', { static: true }) public name: ElementRef;
+  public id = 1;
 
   constructor(
     private charactersService: CharactersService,
     private router: Router
   ) {}
 
-  public onAdd(planet: HTMLInputElement, city: HTMLInputElement) {
-    this.character.name = this.name.nativeElement.value;
-    this.character.address = {
-      planet: planet.value,
-      city: city.value
-    };
-    this.charactersService.addCharacter(this.character);
-    this.router.navigate(['characters']);
-    this.onReset();
+  ngOnInit() {
+    this.character = this.charactersService.fetchCharacter(this.id);
   }
 
   public onAddSkill() {
@@ -119,10 +120,8 @@ export class AddCharacterComponent {
     this.currentSkill = null;
   }
 
-  public onReset() {
-    this.character = {
-      skills: [],
-      address: {} as Address
-    } as Character;
+  public onUpdate() {
+    this.charactersService.updateCharacter(this.character.id, this.character);
+    this.router.navigate(['characters']);
   }
 }

@@ -8,6 +8,7 @@ export class CharactersService {
 
   public characters: Character[] = [
     {
+      id: 1,
       name: 'Batman',
       affiliation: 'Justice League',
       alignment: Alignment.GOOD,
@@ -15,6 +16,7 @@ export class CharactersService {
       skills: ['money', 'tech']
     },
     {
+      id: 2,
       name: 'Joker',
       affiliation: 'Injustice League',
       alignment: Alignment.BAD,
@@ -33,5 +35,14 @@ export class CharactersService {
 
   public fetchCharacters(): Character[] {
     return [...this.characters];
+  }
+
+  public updateCharacter(id: number, character: Character) {
+    const index = this.characters.findIndex(char => char.id === id);
+    this.characters[index] = character;
+  }
+
+  public fetchCharacter(id: number) {
+    return { ...this.characters.find(character => character.id === id) };
   }
 }

@@ -9,6 +9,7 @@ import { CharacterComponent } from './components/character.component';
 import { CharactersComponent } from './components/characters.component';
 import { HeaderComponent } from './components/header.component';
 import { LifecyclesComponent } from './components/lifecycles.component';
+import { UpdateCharacterComponent } from './components/update-character.component';
 import { AlignmentDirective } from './directives/alignment.directive';
 import { HighlightDirective } from './directives/highlight.directive';
 import { UnlessDirective } from './directives/unless.directive';
@@ -23,8 +24,12 @@ const routes: Routes = [
     component: CharactersComponent
   },
   {
-    path: 'add-character',
+    path: 'characters/new',
     component: AddCharacterComponent
+  },
+  {
+    path: 'characters/edit/:id',
+    component: UpdateCharacterComponent
   }
 ];
 
@@ -38,7 +43,8 @@ const routes: Routes = [
     HighlightDirective,
     AlignmentDirective,
     UnlessDirective,
-    HeaderComponent
+    HeaderComponent,
+    UpdateCharacterComponent
   ],
   imports: [BrowserModule, FormsModule, RouterModule.forRoot(routes)],
   providers: [],

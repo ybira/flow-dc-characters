@@ -13,7 +13,7 @@ import { Component, OnInit } from '@angular/core';
             <a routerLink="characters">Character List</a>
           </li>
           <li routerLinkActive="active">
-            <a [routerLink]="['/add-character']">Add Character</a>
+            <a [routerLink]="['characters', 'new']">Add Character</a>
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">

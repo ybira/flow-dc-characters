@@ -1,4 +1,5 @@
 export interface Character {
+  id: number;
   name: string;
   alignment: Alignment;
   affiliation: string;

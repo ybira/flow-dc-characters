@@ -8,6 +8,7 @@ import { Character } from '../model/character.model';
       class="panel panel-default"
       [appAlignment]="character.alignment === 'good'"
       appHighlight
+      [routerLink]="['edit', character.id]"
     >
       <div class="panel-body">
         <!--        <p *appUnless="character.alignment === 'good'">BEWARE!</p>-->
