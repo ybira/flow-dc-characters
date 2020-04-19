@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { AddCharacterComponent } from './components/add-character.component';
 import { CharacterComponent } from './components/character.component';
 import { CharactersComponent } from './components/characters.component';
+import { HeaderComponent } from './components/header.component';
 import { LifecyclesComponent } from './components/lifecycles.component';
 import { AlignmentDirective } from './directives/alignment.directive';
 import { HighlightDirective } from './directives/highlight.directive';
@@ -20,7 +21,8 @@ import { UnlessDirective } from './directives/unless.directive';
     LifecyclesComponent,
     HighlightDirective,
     AlignmentDirective,
-    UnlessDirective
+    UnlessDirective,
+    HeaderComponent
   ],
   imports: [BrowserModule, FormsModule],
   providers: [],
