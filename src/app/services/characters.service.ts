@@ -1,7 +1,11 @@
-import { EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Alignment, Character } from '../model/character.model';
+import { LoggingService } from './logging.service';
 
+@Injectable()
 export class CharactersService {
+  constructor(private loggingService: LoggingService) {}
+
   public characters: Character[] = [
     {
       name: 'Batman',
@@ -20,6 +24,10 @@ export class CharactersService {
   ];
 
   public addCharacter(character: Character) {
+    this.loggingService.createLog(
+      'ADD',
+      `Character created with name: ${character.name}`
+    );
     this.characters.push(character);
   }
 

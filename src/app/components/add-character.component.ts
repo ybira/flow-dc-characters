@@ -93,16 +93,9 @@ export class AddCharacterComponent {
 
   @ViewChild('name', { static: true }) public name: ElementRef;
 
-  constructor(
-    private loggingService: LoggingService,
-    private charactersService: CharactersService
-  ) {}
+  constructor(private charactersService: CharactersService) {}
 
   public onAdd(planet: HTMLInputElement, city: HTMLInputElement) {
-    this.loggingService.createLog(
-      'ADD',
-      `Character created with name: ${this.name.nativeElement.value}`
-    );
     this.character.name = this.name.nativeElement.value;
     this.character.address = {
       planet: planet.value,
