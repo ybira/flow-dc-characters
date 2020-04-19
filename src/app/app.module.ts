@@ -38,6 +38,10 @@ const routes: Routes = [
   {
     path: 'characters/edit/:id',
     component: UpdateCharacterComponent
+  },
+  {
+    path: '**',
+    redirectTo: '/characters'
   }
 ];
 
