@@ -1,11 +1,7 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Output,
-  ViewChild
-} from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Address, Alignment, Character } from '../model/character.model';
+import { CharactersService } from '../services/characters.service';
+import { LoggingService } from '../services/logging.service';
 
 @Component({
   selector: 'app-add-character',
@@ -85,13 +81,10 @@ import { Address, Alignment, Character } from '../model/character.model';
         margin-left: 2rem;
       }
     `
-  ]
+  ],
+  providers: [CharactersService, LoggingService]
 })
 export class AddCharacterComponent {
-  @Output() public characterAdded: EventEmitter<Character> = new EventEmitter<
-    Character
-  >();
-
   public alignments: Alignment[] = [Alignment.GOOD, Alignment.BAD];
   public character: Character = {
     skills: [],
@@ -101,15 +94,23 @@ export class AddCharacterComponent {
 
   @ViewChild('name', { static: true }) public name: ElementRef;
 
-  constructor() {}
+  constructor(
+    private loggingService: LoggingService,
+    private charactersService: CharactersService
+  ) {}
 
   public onAdd(planet: HTMLInputElement, city: HTMLInputElement) {
+    this.loggingService.createLog(
+      'ADD',
+      `Character created with name: ${this.name.nativeElement.value}`
+    );
     this.character.name = this.name.nativeElement.value;
     this.character.address = {
       planet: planet.value,
       city: city.value
     };
-    this.characterAdded.emit(this.character);
+    this.charactersService.addCharacter(this.character);
+    console.log(this.charactersService.fetchCharacters());
     this.onReset();
   }
 

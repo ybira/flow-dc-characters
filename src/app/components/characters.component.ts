@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Character } from '../model/character.model';
+import { CharactersService } from '../services/characters.service';
 
 @Component({
   selector: 'app-characters',
@@ -30,12 +31,15 @@ import { Character } from '../model/character.model';
         text-align: center;
       }
     `
-  ]
+  ],
+  providers: [CharactersService]
 })
 export class CharactersComponent implements OnInit {
-  @Input() public characters: Character[];
+  public characters: Character[];
 
-  constructor() {}
+  constructor(private charactersService: CharactersService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.characters = this.charactersService.fetchCharacters();
+  }
 }
