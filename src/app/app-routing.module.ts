@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './auth.guard';
 import { AddCharacterComponent } from './components/add-character.component';
 import { CharacterDetailsComponent } from './components/character-details.component';
 import { CharactersComponent } from './components/characters.component';
@@ -18,11 +19,13 @@ const routes: Routes = [
   },
   {
     path: 'characters/new',
+    canActivate: [AuthGuard],
     component: AddCharacterComponent
   },
   {
     path: 'characters',
     component: CharactersComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: ':id',
