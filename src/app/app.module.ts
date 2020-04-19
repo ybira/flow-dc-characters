@@ -1,7 +1,7 @@
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { AddCharacterComponent } from './components/add-character.component';
@@ -15,35 +15,6 @@ import { UpdateCharacterComponent } from './components/update-character.componen
 import { AlignmentDirective } from './directives/alignment.directive';
 import { HighlightDirective } from './directives/highlight.directive';
 import { UnlessDirective } from './directives/unless.directive';
-
-const routes: Routes = [
-  {
-    path: '',
-    component: CharactersComponent
-  },
-  {
-    path: 'characters/new',
-    component: AddCharacterComponent
-  },
-  {
-    path: 'characters',
-    component: CharactersComponent,
-    children: [
-      {
-        path: ':id',
-        component: CharacterDetailsComponent
-      }
-    ]
-  },
-  {
-    path: 'characters/edit/:id',
-    component: UpdateCharacterComponent
-  },
-  {
-    path: '**',
-    redirectTo: '/characters'
-  }
-];
 
 @NgModule({
   declarations: [
@@ -60,7 +31,7 @@ const routes: Routes = [
     FilterComponent,
     CharacterDetailsComponent
   ],
-  imports: [BrowserModule, FormsModule, RouterModule.forRoot(routes)],
+  imports: [BrowserModule, FormsModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent]
 })
