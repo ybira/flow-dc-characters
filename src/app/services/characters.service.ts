@@ -26,6 +26,7 @@ export class CharactersService {
   ];
 
   public addCharacter(character: Character) {
+    character.id = this.characters.length + 1;
     this.loggingService.createLog(
       'ADD',
       `Character created with name: ${character.name}`
