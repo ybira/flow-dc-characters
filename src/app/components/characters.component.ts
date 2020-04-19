@@ -21,6 +21,7 @@ import { CharactersService } from '../services/characters.service';
       </div>
     </div>
     <router-outlet></router-outlet>
+    <app-observable></app-observable>
   `,
   styles: [
     `
