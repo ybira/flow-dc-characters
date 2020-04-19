@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { OnCanDeactivate } from '../can-deactivate.guard';
 import { Alignment, Character } from '../model/character.model';
 import { CharactersService } from '../services/characters.service';
 
@@ -99,10 +101,12 @@ import { CharactersService } from '../services/characters.service';
     `
   ]
 })
-export class UpdateCharacterComponent implements OnInit {
+export class UpdateCharacterComponent implements OnInit, OnCanDeactivate {
   public alignments: Alignment[] = [Alignment.GOOD, Alignment.BAD];
   public character: Character;
   public currentSkill: string;
+
+  public allowNavigate;
 
   constructor(
     private charactersService: CharactersService,
@@ -111,6 +115,7 @@ export class UpdateCharacterComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.allowNavigate = false;
     this.route.params.subscribe(params => {
       this.character = this.charactersService.fetchCharacter(+params.id);
     });
@@ -122,7 +127,16 @@ export class UpdateCharacterComponent implements OnInit {
   }
 
   public onUpdate() {
+    this.allowNavigate = true;
     this.charactersService.updateCharacter(this.character.id, this.character);
     this.router.navigate(['characters']);
+  }
+
+  public canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+    if (this.allowNavigate) {
+      return true;
+    } else {
+      return confirm('You wish to navigate without saving?');
+    }
   }
 }

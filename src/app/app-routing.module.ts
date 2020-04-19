@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth.guard';
+import { CanDeactivateGuard } from './can-deactivate.guard';
 import { AddCharacterComponent } from './components/add-character.component';
 import { CharacterDetailsComponent } from './components/character-details.component';
 import { CharactersComponent } from './components/characters.component';
@@ -42,6 +43,7 @@ const routes: Routes = [
     path: 'characters/edit/:id',
     component: UpdateCharacterComponent,
     canActivate: [AuthGuard, RoleGuard],
+    canDeactivate: [CanDeactivateGuard],
     data: { roles: [Role.EDITOR, Role.ADMIN] }
   },
   {
