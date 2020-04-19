@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Alignment, Character } from '../model/character.model';
 import { LoggingService } from './logging.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class CharactersService {
   constructor(private loggingService: LoggingService) {}
 
