@@ -1,3 +1,4 @@
+import { EventEmitter } from '@angular/core';
 import { Alignment, Character } from '../model/character.model';
 
 export class CharactersService {

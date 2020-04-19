@@ -81,8 +81,7 @@ import { LoggingService } from '../services/logging.service';
         margin-left: 2rem;
       }
     `
-  ],
-  providers: [CharactersService, LoggingService]
+  ]
 })
 export class AddCharacterComponent {
   public alignments: Alignment[] = [Alignment.GOOD, Alignment.BAD];
