@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { Address, Alignment, Character } from '../model/character.model';
 import { CharactersService } from '../services/characters.service';
-import { LoggingService } from '../services/logging.service';
 
 @Component({
   selector: 'app-add-character',
@@ -98,7 +98,10 @@ export class AddCharacterComponent {
 
   @ViewChild('name', { static: true }) public name: ElementRef;
 
-  constructor(private charactersService: CharactersService) {}
+  constructor(
+    private charactersService: CharactersService,
+    private router: Router
+  ) {}
 
   public onAdd(planet: HTMLInputElement, city: HTMLInputElement) {
     this.character.name = this.name.nativeElement.value;
@@ -107,7 +110,7 @@ export class AddCharacterComponent {
       city: city.value
     };
     this.charactersService.addCharacter(this.character);
-    console.log(this.charactersService.fetchCharacters());
+    this.router.navigate(['characters']);
     this.onReset();
   }
 
