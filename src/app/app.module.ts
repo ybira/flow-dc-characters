@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { AddCharacterComponent } from './components/add-character.component';
 import { CharacterComponent } from './components/character.component';
 import { CharactersComponent } from './components/characters.component';
+import { FilterComponent } from './components/filter.component';
 import { HeaderComponent } from './components/header.component';
 import { LifecyclesComponent } from './components/lifecycles.component';
 import { UpdateCharacterComponent } from './components/update-character.component';
@@ -44,7 +45,8 @@ const routes: Routes = [
     AlignmentDirective,
     UnlessDirective,
     HeaderComponent,
-    UpdateCharacterComponent
+    UpdateCharacterComponent,
+    FilterComponent
   ],
   imports: [BrowserModule, FormsModule, RouterModule.forRoot(routes)],
   providers: [],

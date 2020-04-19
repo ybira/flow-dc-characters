@@ -1,17 +1,24 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Character } from '../model/character.model';
 import { CharactersService } from '../services/characters.service';
 
 @Component({
   selector: 'app-characters',
   template: `
+    <h3>
+      Character list<span *ngIf="fragment"> (only {{ fragment }})</span>
+    </h3>
     <div class="row">
-      <app-character
-        *ngFor="let character of characters"
-        [character]="character"
-      >
-        <h4>{{ character.name }}</h4>
-      </app-character>
+      <app-filter></app-filter>
+      <div class="row" style="flex-wrap: wrap">
+        <app-character
+          *ngFor="let character of characters"
+          [character]="character"
+        >
+          <h4>{{ character.name }}</h4>
+        </app-character>
+      </div>
     </div>
   `,
   styles: [
@@ -25,6 +32,7 @@ import { CharactersService } from '../services/characters.service';
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
+        width: 100%;
       }
 
       h4 {
@@ -35,10 +43,21 @@ import { CharactersService } from '../services/characters.service';
 })
 export class CharactersComponent implements OnInit {
   public characters: Character[];
+  public fragment: string;
 
-  constructor(private charactersService: CharactersService) {}
+  constructor(
+    private charactersService: CharactersService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.characters = this.charactersService.fetchCharacters();
+    this.route.queryParams.subscribe(queryParams => {
+      this.characters = this.charactersService.fetchCharacters(
+        queryParams.filter
+      );
+    });
+    this.route.fragment.subscribe(fragment => {
+      this.fragment = fragment;
+    });
   }
 }

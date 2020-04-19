@@ -34,8 +34,10 @@ export class CharactersService {
     this.characters.push(character);
   }
 
-  public fetchCharacters(): Character[] {
-    return [...this.characters];
+  public fetchCharacters(filter: string): Character[] {
+    return filter
+      ? [...this.characters.filter(c => c.alignment === filter)]
+      : [...this.characters];
   }
 
   public updateCharacter(id: number, character: Character) {
