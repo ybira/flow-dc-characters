@@ -1,8 +1,4 @@
-import {
-  Component,
-  DoCheck,
-  OnInit,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Character } from '../model/character.model';
 import { CharactersService } from '../services/characters.service';
 
@@ -37,14 +33,12 @@ import { CharactersService } from '../services/characters.service';
     `
   ]
 })
-export class CharactersComponent implements OnInit, DoCheck {
+export class CharactersComponent implements OnInit {
   public characters: Character[];
 
   constructor(private charactersService: CharactersService) {}
 
-  ngDoCheck(): void {
+  ngOnInit(): void {
     this.characters = this.charactersService.fetchCharacters();
   }
-
-  ngOnInit(): void {}
 }

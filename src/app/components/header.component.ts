@@ -6,11 +6,11 @@ import { Component, OnInit } from '@angular/core';
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">Heroes & Villains</a>
+          <a class="navbar-brand" routerLink="/">Heroes & Villains</a>
         </div>
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Character List</a></li>
-          <li><a href="#">Add Character</a></li>
+          <li class="active"><a routerLink="characters">Character List</a></li>
+          <li><a [routerLink]="['/add-character']">Add Character</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li><a href="#">Logged in as: Test Elek (LOGOUT)</a></li>

@@ -64,7 +64,12 @@ import { LoggingService } from '../services/logging.service';
         >
           Add New Character
         </button>
-        <button class="btn btn-primary" type="button" (click)="onReset()">
+        <button
+          class="btn btn-primary"
+          type="button"
+          [routerLink]="['../characters']"
+          (click)="onReset()"
+        >
           Reset
         </button>
       </div>

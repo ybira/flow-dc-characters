@@ -1,6 +1,7 @@
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { AddCharacterComponent } from './components/add-character.component';
@@ -11,6 +12,21 @@ import { LifecyclesComponent } from './components/lifecycles.component';
 import { AlignmentDirective } from './directives/alignment.directive';
 import { HighlightDirective } from './directives/highlight.directive';
 import { UnlessDirective } from './directives/unless.directive';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: CharactersComponent
+  },
+  {
+    path: 'characters',
+    component: CharactersComponent
+  },
+  {
+    path: 'add-character',
+    component: AddCharacterComponent
+  }
+];
 
 @NgModule({
   declarations: [
@@ -24,7 +40,7 @@ import { UnlessDirective } from './directives/unless.directive';
     UnlessDirective,
     HeaderComponent
   ],
-  imports: [BrowserModule, FormsModule],
+  imports: [BrowserModule, FormsModule, RouterModule.forRoot(routes)],
   providers: [],
   bootstrap: [AppComponent]
 })
