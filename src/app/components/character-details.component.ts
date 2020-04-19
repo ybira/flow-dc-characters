@@ -40,12 +40,12 @@ export class CharacterDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.character = this.charactersService.fetchCharacter(1);
+      this.character = this.charactersService.fetchCharacter(+params.id);
     });
   }
 
   public onUpdate() {
-    this.router.navigate(['edit', this.character.id], {
+    this.router.navigate(['..', 'edit', this.character.id], {
       relativeTo: this.route
     });
   }

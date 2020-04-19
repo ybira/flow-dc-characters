@@ -22,12 +22,18 @@ const routes: Routes = [
     component: CharactersComponent
   },
   {
-    path: 'characters',
-    component: CharactersComponent
-  },
-  {
     path: 'characters/new',
     component: AddCharacterComponent
+  },
+  {
+    path: 'characters',
+    component: CharactersComponent,
+    children: [
+      {
+        path: ':id',
+        component: CharacterDetailsComponent
+      }
+    ]
   },
   {
     path: 'characters/edit/:id',

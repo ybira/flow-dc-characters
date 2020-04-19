@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Character } from '../model/character.model';
 
 @Component({
@@ -8,7 +9,7 @@ import { Character } from '../model/character.model';
       class="panel panel-default"
       [appAlignment]="character.alignment === 'good'"
       appHighlight
-      [routerLink]="['edit', character.id]"
+      (click)="onShowDetails()"
     >
       <div class="panel-body">
         <!--        <p *appUnless="character.alignment === 'good'">BEWARE!</p>-->
@@ -21,7 +22,15 @@ import { Character } from '../model/character.model';
 export class CharacterComponent implements OnInit {
   @Input() public character: Character;
 
-  constructor() {}
+  constructor(private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {}
+
+  public onShowDetails() {
+    this.router.navigate([this.character.id], {
+      relativeTo: this.route,
+      queryParamsHandling: 'preserve',
+      preserveFragment: true
+    });
+  }
 }
