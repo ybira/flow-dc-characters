@@ -1,20 +1,48 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription, timer } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-observable',
   template: ``
 })
 export class ObservableComponent implements OnInit, OnDestroy {
-  public subscription$: Subscription;
+  public subscriptions$: Subscription[] = [];
 
   constructor() {}
 
   ngOnInit() {
-    this.subscription$ = timer(1000, 1000).subscribe(n => console.log(n));
+    const custom = new Observable(observer => {
+      let counter = 0;
+      setInterval(() => {
+        observer.next(counter);
+        if (counter === 5) {
+          observer.complete();
+        }
+        if (counter > 5) {
+          observer.error('HIBA VAN');
+        }
+        counter++;
+      }, 1000);
+    });
+
+    this.subscriptions$.push(
+      custom.subscribe(
+        n => {
+          console.log(n);
+        },
+        error => {
+          console.log(error);
+        },
+        () => {
+          console.log('DONE!');
+        }
+      )
+    );
   }
 
   public ngOnDestroy(): void {
-    this.subscription$.unsubscribe();
+    this.subscriptions$.forEach(sub => {
+      sub.unsubscribe();
+    });
   }
 }
