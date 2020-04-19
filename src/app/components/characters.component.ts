@@ -20,6 +20,7 @@ import { CharactersService } from '../services/characters.service';
         </app-character>
       </div>
     </div>
+    <app-character-details></app-character-details>
   `,
   styles: [
     `

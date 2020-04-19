@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { AddCharacterComponent } from './components/add-character.component';
+import { CharacterDetailsComponent } from './components/character-details.component';
 import { CharacterComponent } from './components/character.component';
 import { CharactersComponent } from './components/characters.component';
 import { FilterComponent } from './components/filter.component';
@@ -46,7 +47,8 @@ const routes: Routes = [
     UnlessDirective,
     HeaderComponent,
     UpdateCharacterComponent,
-    FilterComponent
+    FilterComponent,
+    CharacterDetailsComponent
   ],
   imports: [BrowserModule, FormsModule, RouterModule.forRoot(routes)],
   providers: [],
