@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { User } from '../model/user.model';
 import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-header',
   template: `
-    <nav class="navbar navbar-default" *ngIf="user">
+    <nav class="navbar navbar-default" *ngIf="user$ | async">
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand" routerLink="/">Heroes & Villains</a>
@@ -22,7 +23,7 @@ import { AuthService } from '../services/auth.service';
         <ul class="nav navbar-nav navbar-right">
           <li>
             <a (click)="onLogout()"
-              >Logged in as: {{ user.fullName }} (LOGOUT)</a
+              >Logged in as: {{ (user$ | async).fullName }} (LOGOUT)</a
             >
           </li>
         </ul>
@@ -31,15 +32,11 @@ import { AuthService } from '../services/auth.service';
   `
 })
 export class HeaderComponent implements OnInit {
-  public user: User;
+  public user$: Observable<User> = this.authService.user;
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  ngOnInit() {
-    this.authService.user.subscribe(user => {
-      this.user = user;
-    });
-  }
+  ngOnInit() {}
 
   public onLogout() {
     this.authService.logout();
