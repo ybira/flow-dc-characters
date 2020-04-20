@@ -7,6 +7,7 @@ import {
   Router
 } from '@angular/router';
 import { Observable } from 'rxjs';
+import { User } from '../model/user.model';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({
@@ -23,20 +24,12 @@ export class AuthGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    return this.authService.authenticateAsync().then(isAuth => {
-      if (isAuth) {
-        return true;
-      } else {
-        this.router.navigate(['login']);
-        return false;
-      }
-    });
-    // const isAuth = this.authService.authenticate();
-    // if (isAuth) {
-    //   return true;
-    // } else {
-    //   this.router.navigate(['login']);
-    //   return false;
-    // }
+    const user: User = this.authService.authenticate();
+    if (user) {
+      return true;
+    } else {
+      this.router.navigate(['login']);
+      return false;
+    }
   }
 }

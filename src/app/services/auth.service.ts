@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Role, User } from '../model/user.model';
 
 @Injectable({ providedIn: 'root' })
@@ -8,14 +9,16 @@ export class AuthService {
     { id: 2, fullName: 'Editor Test', email: 'editor', role: Role.EDITOR },
     { id: 3, fullName: 'Reader Test', email: 'reader', role: Role.READER }
   ];
-  private loggedInUser: User;
+  private loggedInUser$: BehaviorSubject<User> = new BehaviorSubject<User>(
+    null
+  );
 
   public login(email: string): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       setTimeout(() => {
         const user = this.users.find(u => u.email === email);
         if (user) {
-          this.loggedInUser = user;
+          this.loggedInUser$.next(user);
           resolve(true);
         }
         reject(false);
@@ -24,18 +27,14 @@ export class AuthService {
   }
 
   public logout() {
-    this.loggedInUser = null;
+    this.loggedInUser$.next(null);
   }
 
   public authenticate(): User {
-    return this.loggedInUser;
+    return this.loggedInUser$.getValue();
   }
 
-  public authenticateAsync(): Promise<User> {
-    return new Promise<User>((resolve, reject) => {
-      setTimeout(() => {
-        resolve(this.loggedInUser);
-      }, 100);
-    });
+  get user(): Observable<User> {
+    return this.loggedInUser$;
   }
 }
