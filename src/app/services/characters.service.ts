@@ -47,6 +47,6 @@ export class CharactersService {
   }
 
   public fetchCharacter(id: number) {
-    return { ...this.characters.find((character) => character.id === id) };
+    return this.http.get<Character>(`http://localhost:3000/api/v1/no-auth/characters/${id}`);
   }
 }
