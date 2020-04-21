@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 import { Character } from '../model/character.model';
 import { CharactersService } from '../services/characters.service';
 
@@ -12,7 +13,7 @@ import { CharactersService } from '../services/characters.service';
     <div class="row">
       <app-filter></app-filter>
       <div class="row" style="flex-wrap: wrap">
-        <app-character *ngFor="let character of characters" [character]="character">
+        <app-character *ngFor="let character of characters$ | async" [character]="character">
           <h4>{{ character.name }}</h4>
         </app-character>
       </div>
@@ -41,21 +42,14 @@ import { CharactersService } from '../services/characters.service';
   ],
 })
 export class CharactersComponent implements OnInit {
-  public characters: Character[];
+  public characters$: Observable<Character[]> = this.charactersService.characters;
   public fragment: string;
 
   constructor(private charactersService: CharactersService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((queryParams) => {
-      this.charactersService.fetchCharacters().subscribe(
-        (characters) => {
-          this.characters = characters;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+      this.charactersService.fetchCharacters();
     });
     this.route.fragment.subscribe((fragment) => {
       this.fragment = fragment;

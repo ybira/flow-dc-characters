@@ -18,6 +18,9 @@ import { CharactersService } from '../services/characters.service';
       <button class="btn btn-primary" (click)="onUpdate()">
         Update
       </button>
+      <button class="btn btn-danger" (click)="onDelete()">
+        Delete
+      </button>
     </div>
   `,
   styles: [
@@ -46,5 +49,18 @@ export class CharacterDetailsComponent implements OnInit {
     this.router.navigate(['..', 'edit', this.character.id], {
       relativeTo: this.route,
     });
+  }
+
+  public onDelete() {
+    this.charactersService.deleteCharacter(this.character.id).subscribe(
+      (char) => {
+        this.router.navigate(['characters'], {
+          relativeTo: this.route,
+        });
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 }
