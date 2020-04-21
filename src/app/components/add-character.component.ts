@@ -124,9 +124,15 @@ export class AddCharacterComponent implements OnInit {
   }
 
   public onAdd() {
-    this.charactersService.addCharacter(this.addForm.getRawValue());
-    this.router.navigate(['characters']);
-    this.onReset();
+    this.charactersService.addCharacter(this.addForm.getRawValue()).subscribe(
+      (character) => {
+        console.log(character);
+        this.router.navigate(['characters']);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   public onAddSkill() {
