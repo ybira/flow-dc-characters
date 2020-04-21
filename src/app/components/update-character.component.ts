@@ -16,13 +16,30 @@ import { CharactersService } from '../services/characters.service';
             <label class="control-label" for="name">Name</label>
             <input type="text" class="form-control" id="name" name="name" [(ngModel)]="character.name" disabled />
           </div>
-          <div class="form-group">
-            <label class="control-label" for="planet">Planet</label>
-            <input type="text" class="form-control" id="planet" name="planet" [(ngModel)]="character.address.planet" />
-          </div>
-          <div class="form-group">
-            <label class="control-label" for="city">City</label>
-            <input type="text" class="form-control" id="city" name="city" [(ngModel)]="character.address.city" />
+          <div id="address" ngModelGroup="address" #address="ngModelGroup">
+            <div class="form-group">
+              <label class="control-label" for="planet">Planet</label>
+              <input
+                type="text"
+                class="form-control"
+                id="planet"
+                name="planet"
+                required
+                [(ngModel)]="character.address.planet"
+              />
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="city">City</label>
+              <input
+                type="text"
+                class="form-control"
+                id="city"
+                name="city"
+                [(ngModel)]="character.address.city"
+                required
+              />
+            </div>
+            <span class="help-block" *ngIf="address.invalid && address.touched">All address fields are required!</span>
           </div>
           <div class="form-group">
             <label class="control-label" for="affiliation">Affiliation</label>
