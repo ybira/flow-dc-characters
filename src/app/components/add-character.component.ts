@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { Address, Alignment, Character } from '../model/character.model';
 import { CharactersService } from '../services/characters.service';
 
@@ -31,6 +32,11 @@ import { CharactersService } from '../services/characters.service';
             <div class="form-group">
               <label class="control-label" for="city">City</label>
               <input type="text" class="form-control" id="city" formControlName="city" />
+            </div>
+            <div>
+              <button class="btn btn-default" type="button" (click)="setAddress(0)">Gotham</button>
+              <button class="btn btn-default" type="button" (click)="setAddress(1)">Metropolis</button>
+              <button class="btn btn-default" type="button" (click)="setAddress(2)">Kandor</button>
             </div>
           </div>
           <div
@@ -70,9 +76,9 @@ import { CharactersService } from '../services/characters.service';
           <button class="btn btn-primary" type="submit" [disabled]="addForm.invalid">
             Add New Character
           </button>
-          <!--          <button class="btn btn-primary" type="button" [routerLink]="['../../characters']" (click)="onReset()">-->
-          <!--            Reset-->
-          <!--          </button>-->
+          <button class="btn btn-primary" type="button" (click)="onReset()">
+            Reset
+          </button>
         </form>
       </div>
     </div>
@@ -108,18 +114,19 @@ export class AddCharacterComponent implements OnInit {
       alignment: new FormControl(null, Validators.required),
       skills: new FormArray([], this.duplicateSkill.bind(this)),
     });
+
+    this.addForm.statusChanges.subscribe((data) => {
+      console.log(data);
+    });
+    this.addForm.valueChanges.subscribe((data) => {
+      console.log(data);
+    });
   }
 
   public onAdd() {
-    console.log(this.addForm.getRawValue());
-    // this.character.name = this.name.nativeElement.value;
-    // this.character.address = {
-    //   planet: planet.value,
-    //   city: city.value,
-    // };
-    // this.charactersService.addCharacter(this.character);
-    // this.router.navigate(['characters']);
-    // this.onReset();
+    this.charactersService.addCharacter(this.addForm.getRawValue());
+    this.router.navigate(['characters']);
+    this.onReset();
   }
 
   public onAddSkill() {
@@ -143,10 +150,21 @@ export class AddCharacterComponent implements OnInit {
     return array.filter((item, index) => array.indexOf(item) !== index).length > 0;
   }
 
-  // public onReset() {
-  //   this.character = {
-  //     skills: [],
-  //     address: {} as Address,
-  //   } as Character;
-  // }
+  public onReset() {
+    this.addForm.reset();
+  }
+
+  public setAddress(type: number) {
+    switch (type) {
+      case 0:
+        this.addForm.patchValue({ address: { planet: 'Earth', city: 'Gotham' } });
+        break;
+      case 1:
+        this.addForm.patchValue({ address: { planet: 'Earth', city: 'Metropolis' } });
+        break;
+      case 2:
+        this.addForm.patchValue({ address: { planet: 'Krypton', city: 'Kandor' } });
+        break;
+    }
+  }
 }
