@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { OnCanDeactivate } from '../guards/can-deactivate.guard';
@@ -10,81 +11,56 @@ import { CharactersService } from '../services/characters.service';
   template: `
     <div class="panel panel-default">
       <div class="panel-body">
-        <div class="form-group">
-          <label class="control-label" for="name">Name</label>
-          <input
-            type="text"
-            class="form-control"
-            id="name"
-            [(ngModel)]="character.name"
-            disabled
-          />
-        </div>
-        <div class="form-group">
-          <label class="control-label" for="planet">Planet</label>
-          <input
-            type="text"
-            class="form-control"
-            id="planet"
-            [(ngModel)]="character.address.planet"
-          />
-        </div>
-        <div class="form-group">
-          <label class="control-label" for="city">City</label>
-          <input
-            type="text"
-            class="form-control"
-            id="city"
-            [(ngModel)]="character.address.city"
-          />
-        </div>
-        <div class="form-group">
-          <label class="control-label" for="affiliation">Affiliation</label>
-          <input
-            type="text"
-            class="form-control"
-            id="affiliation"
-            [(ngModel)]="character.affiliation"
-          />
-        </div>
-        <div class="form-group">
-          <label class="control-label">Alignment</label>
-          <div class="radio" *ngFor="let alignment of alignments">
-            <input
-              type="radio"
-              [value]="alignment"
-              [(ngModel)]="character.alignment"
-            />
-            {{ alignment }}
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label">Skills</label>
-          <div class="form-group" *ngFor="let skill of character.skills">
-            <input type="text" class="form-control" disabled [value]="skill" />
+        <form (ngSubmit)="onUpdate(updateForm)" #updateForm="ngForm">
+          <div class="form-group">
+            <label class="control-label" for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" [ngModel]="character.name" disabled />
           </div>
           <div class="form-group">
+            <label class="control-label" for="planet">Planet</label>
+            <input type="text" class="form-control" id="planet" name="planet" [ngModel]="character.address.planet" />
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="city">City</label>
+            <input type="text" class="form-control" id="city" name="city" [ngModel]="character.address.city" />
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="affiliation">Affiliation</label>
             <input
               type="text"
               class="form-control"
-              [(ngModel)]="currentSkill"
+              id="affiliation"
+              name="affiliation"
+              [ngModel]="character.affiliation"
             />
           </div>
-          <br />
-          <button type="button" class="btn btn-default" (click)="onAddSkill()">
-            New Skill
+          <div class="form-group">
+            <label class="control-label">Alignment</label>
+            <div class="radio" *ngFor="let alignment of alignments">
+              <input type="radio" [value]="alignment" name="alignment" [ngModel]="character.alignment" />
+              {{ alignment }}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Skills</label>
+            <div class="form-group" *ngFor="let skill of character.skills">
+              <input type="text" class="form-control" name="skill" disabled [value]="skill" />
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" name="currentSkill" [(ngModel)]="currentSkill" />
+            </div>
+            <br />
+            <button type="button" class="btn btn-default" (click)="onAddSkill()">
+              New Skill
+            </button>
+          </div>
+          <button class="btn btn-primary" type="submit">
+            Update
           </button>
-        </div>
-        <button class="btn btn-primary" type="submit" (click)="onUpdate()">
-          Update
-        </button>
-        <button
-          class="btn btn-primary"
-          type="button"
-          [routerLink]="['/characters']"
-        >
-          Cancel
-        </button>
+          <button class="btn btn-primary" type="button" [routerLink]="['/characters']">
+            Cancel
+          </button>
+        </form>
       </div>
     </div>
   `,
@@ -98,8 +74,8 @@ import { CharactersService } from '../services/characters.service';
       .radio {
         margin-left: 2rem;
       }
-    `
-  ]
+    `,
+  ],
 })
 export class UpdateCharacterComponent implements OnInit, OnCanDeactivate {
   public alignments: Alignment[] = [Alignment.GOOD, Alignment.BAD];
@@ -107,15 +83,11 @@ export class UpdateCharacterComponent implements OnInit, OnCanDeactivate {
   public currentSkill: string;
   public allowNavigate: boolean;
 
-  constructor(
-    private charactersService: CharactersService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
+  constructor(private charactersService: CharactersService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.allowNavigate = false;
-    this.route.data.subscribe(data => {
+    this.route.data.subscribe((data) => {
       this.character = data.character;
     });
   }
@@ -125,9 +97,17 @@ export class UpdateCharacterComponent implements OnInit, OnCanDeactivate {
     this.currentSkill = null;
   }
 
-  public onUpdate() {
+  public onUpdate(form: NgForm) {
+    const updatedCharacter: Character = {
+      id: this.character.id,
+      name: this.character.name,
+      address: { planet: form.value.planet, city: form.value.city },
+      skills: this.character.skills,
+      alignment: form.value.alignment,
+      affiliation: form.value.affiliation,
+    };
     this.allowNavigate = true;
-    this.charactersService.updateCharacter(this.character.id, this.character);
+    this.charactersService.updateCharacter(this.character.id, updatedCharacter);
     this.router.navigate(['characters']);
   }
 
