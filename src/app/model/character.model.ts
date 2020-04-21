@@ -5,6 +5,8 @@ export interface Character {
   affiliation: string;
   address: Address;
   skills: string[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface Address {
@@ -14,5 +16,5 @@ export interface Address {
 
 export enum Alignment {
   GOOD = 'good',
-  BAD = 'bad'
+  BAD = 'bad',
 }

@@ -13,7 +13,9 @@ export class CharactersService {
       affiliation: 'Justice League',
       alignment: Alignment.GOOD,
       address: { planet: 'Earth', city: 'Gotham' },
-      skills: ['money', 'tech']
+      skills: ['money', 'tech'],
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       id: 2,
@@ -21,31 +23,28 @@ export class CharactersService {
       affiliation: 'Injustice League',
       alignment: Alignment.BAD,
       address: { planet: 'Earth', city: 'Gotham' },
-      skills: ['tech', 'intellect']
-    }
+      skills: ['tech', 'intellect'],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ];
 
   public addCharacter(character: Character) {
     character.id = this.characters.length + 1;
-    this.loggingService.createLog(
-      'ADD',
-      `Character created with name: ${character.name}`
-    );
+    this.loggingService.createLog('ADD', `Character created with name: ${character.name}`);
     this.characters.push(character);
   }
 
   public fetchCharacters(filter: string): Character[] {
-    return filter
-      ? [...this.characters.filter(c => c.alignment === filter)]
-      : [...this.characters];
+    return filter ? [...this.characters.filter((c) => c.alignment === filter)] : [...this.characters];
   }
 
   public updateCharacter(id: number, character: Character) {
-    const index = this.characters.findIndex(char => char.id === id);
+    const index = this.characters.findIndex((char) => char.id === id);
     this.characters[index] = character;
   }
 
   public fetchCharacter(id: number) {
-    return { ...this.characters.find(character => character.id === id) };
+    return { ...this.characters.find((character) => character.id === id) };
   }
 }

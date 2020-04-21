@@ -115,12 +115,12 @@ export class AddCharacterComponent implements OnInit {
       skills: new FormArray([], this.duplicateSkill.bind(this)),
     });
 
-    this.addForm.statusChanges.subscribe((data) => {
-      console.log(data);
-    });
-    this.addForm.valueChanges.subscribe((data) => {
-      console.log(data);
-    });
+    // this.addForm.statusChanges.subscribe((data) => {
+    //   console.log(data);
+    // });
+    // this.addForm.valueChanges.subscribe((data) => {
+    //   console.log(data);
+    // });
   }
 
   public onAdd() {

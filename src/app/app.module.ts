@@ -17,6 +17,8 @@ import { UpdateCharacterComponent } from './components/update-character.componen
 import { AlignmentDirective } from './directives/alignment.directive';
 import { HighlightDirective } from './directives/highlight.directive';
 import { UnlessDirective } from './directives/unless.directive';
+import { SkillsPipe } from './pipes/skills.pipe';
+import { AlignmentPipe } from './pipes/alignment.pipe';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import { UnlessDirective } from './directives/unless.directive';
     CharacterDetailsComponent,
     LoginComponent,
     ObservableComponent,
+    SkillsPipe,
+    AlignmentPipe,
   ],
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, AppRoutingModule],
   providers: [],
