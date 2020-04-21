@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -40,6 +40,11 @@ import { CharactersService } from '../services/characters.service';
               />
             </div>
             <span class="help-block" *ngIf="address.invalid && address.touched">All address fields are required!</span>
+            <div>
+              <button class="btn btn-default" type="button" (click)="setAddress(0)">Gotham</button>
+              <button class="btn btn-default" type="button" (click)="setAddress(1)">Metropolis</button>
+              <button class="btn btn-default" type="button" (click)="setAddress(2)">Kandor</button>
+            </div>
           </div>
           <div class="form-group">
             <label class="control-label" for="affiliation">Affiliation</label>
@@ -95,6 +100,7 @@ import { CharactersService } from '../services/characters.service';
   ],
 })
 export class UpdateCharacterComponent implements OnInit, OnCanDeactivate {
+  @ViewChild('updateForm') public form: NgForm;
   public alignments: Alignment[] = [Alignment.GOOD, Alignment.BAD];
   public character: Character;
   public currentSkill: string;
@@ -107,6 +113,20 @@ export class UpdateCharacterComponent implements OnInit, OnCanDeactivate {
     this.route.data.subscribe((data) => {
       this.character = data.character;
     });
+  }
+
+  public setAddress(type: number) {
+    switch (type) {
+      case 0:
+        this.form.form.patchValue({ address: { planet: 'Earth', city: 'Gotham' } });
+        break;
+      case 1:
+        this.form.form.patchValue({ address: { planet: 'Earth', city: 'Metropolis' } });
+        break;
+      case 2:
+        this.form.form.patchValue({ address: { planet: 'Krypton', city: 'Kandor' } });
+        break;
+    }
   }
 
   public onAddSkill() {
