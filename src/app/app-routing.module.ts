@@ -14,49 +14,49 @@ import { CharacterResolver } from './resolvers/character.resolver';
 const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: '',
     redirectTo: '/characters',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'characters/new',
-    canActivate: [AuthGuard, RoleGuard],
+    // canActivate: [AuthGuard, RoleGuard],
     data: { roles: [Role.ADMIN] },
-    component: AddCharacterComponent
+    component: AddCharacterComponent,
   },
   {
     path: 'characters',
     component: CharactersComponent,
-    canActivate: [AuthGuard],
-    canActivateChild: [RoleGuard],
+    // canActivate: [AuthGuard],
+    // canActivateChild: [RoleGuard],
     children: [
       {
         path: ':id',
         component: CharacterDetailsComponent,
         resolve: { character: CharacterResolver },
-        data: { roles: [Role.EDITOR, Role.ADMIN] }
-      }
-    ]
+        data: { roles: [Role.EDITOR, Role.ADMIN] },
+      },
+    ],
   },
   {
     path: 'characters/edit/:id',
     component: UpdateCharacterComponent,
-    canActivate: [AuthGuard, RoleGuard],
-    canDeactivate: [CanDeactivateGuard],
+    // canActivate: [AuthGuard, RoleGuard],
+    // canDeactivate: [CanDeactivateGuard],
     resolve: { character: CharacterResolver },
-    data: { roles: [Role.EDITOR, Role.ADMIN] }
+    data: { roles: [Role.EDITOR, Role.ADMIN] },
   },
   {
     path: '**',
-    redirectTo: '/characters'
-  }
+    redirectTo: '/characters',
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

@@ -11,18 +11,18 @@ import { CharactersService } from '../services/characters.service';
   template: `
     <div class="panel panel-default">
       <div class="panel-body">
-        <form (ngSubmit)="onUpdate(updateForm)" #updateForm="ngForm">
+        <form (ngSubmit)="onUpdate()" #updateForm="ngForm">
           <div class="form-group">
             <label class="control-label" for="name">Name</label>
-            <input type="text" class="form-control" id="name" name="name" [ngModel]="character.name" disabled />
+            <input type="text" class="form-control" id="name" name="name" [(ngModel)]="character.name" disabled />
           </div>
           <div class="form-group">
             <label class="control-label" for="planet">Planet</label>
-            <input type="text" class="form-control" id="planet" name="planet" [ngModel]="character.address.planet" />
+            <input type="text" class="form-control" id="planet" name="planet" [(ngModel)]="character.address.planet" />
           </div>
           <div class="form-group">
             <label class="control-label" for="city">City</label>
-            <input type="text" class="form-control" id="city" name="city" [ngModel]="character.address.city" />
+            <input type="text" class="form-control" id="city" name="city" [(ngModel)]="character.address.city" />
           </div>
           <div class="form-group">
             <label class="control-label" for="affiliation">Affiliation</label>
@@ -31,13 +31,13 @@ import { CharactersService } from '../services/characters.service';
               class="form-control"
               id="affiliation"
               name="affiliation"
-              [ngModel]="character.affiliation"
+              [(ngModel)]="character.affiliation"
             />
           </div>
           <div class="form-group">
             <label class="control-label">Alignment</label>
             <div class="radio" *ngFor="let alignment of alignments">
-              <input type="radio" [value]="alignment" name="alignment" [ngModel]="character.alignment" />
+              <input type="radio" [value]="alignment" name="alignment" [(ngModel)]="character.alignment" />
               {{ alignment }}
             </div>
           </div>
@@ -97,17 +97,9 @@ export class UpdateCharacterComponent implements OnInit, OnCanDeactivate {
     this.currentSkill = null;
   }
 
-  public onUpdate(form: NgForm) {
-    const updatedCharacter: Character = {
-      id: this.character.id,
-      name: this.character.name,
-      address: { planet: form.value.planet, city: form.value.city },
-      skills: this.character.skills,
-      alignment: form.value.alignment,
-      affiliation: form.value.affiliation,
-    };
+  public onUpdate() {
     this.allowNavigate = true;
-    this.charactersService.updateCharacter(this.character.id, updatedCharacter);
+    this.charactersService.updateCharacter(this.character.id, this.character);
     this.router.navigate(['characters']);
   }
 
