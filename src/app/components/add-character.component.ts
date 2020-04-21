@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Address, Alignment, Character } from '../model/character.model';
 import { CharactersService } from '../services/characters.service';
@@ -50,19 +50,23 @@ import { CharactersService } from '../services/characters.service';
               {{ alignment }}
             </div>
           </div>
-          <!--          <div class="form-group">-->
-          <!--            <label class="control-label">Skills</label>-->
-          <!--            <div class="form-group" *ngFor="let skill of character.skills">-->
-          <!--              <input type="text" class="form-control" disabled [value]="skill" />-->
-          <!--            </div>-->
-          <!--            <div class="form-group">-->
-          <!--              <input type="text" class="form-control" [(ngModel)]="currentSkill" />-->
-          <!--            </div>-->
-          <!--            <br />-->
-          <!--            <button type="button" class="btn btn-default" (click)="onAddSkill()">-->
-          <!--              New Skill-->
-          <!--            </button>-->
-          <!--          </div>-->
+          <div
+            class="form-group"
+            formArrayName="skills"
+            [ngClass]="{ 'has-error': addForm.get('skills').hasError('duplication') && addForm.get('skills').touched }"
+          >
+            <label class="control-label">Skills</label>
+            <div class="form-group" *ngFor="let skill of skills; let i = index">
+              <input type="text" class="form-control" [formControlName]="i" />
+            </div>
+            <span
+              class="help-block"
+              *ngIf="addForm.get('skills').hasError('duplication') && addForm.get('skills').touched"
+            >
+              Values must not be duplicates!
+            </span>
+            <button type="button" class="btn btn-default" (click)="onAddSkill()">New Skill</button>
+          </div>
           <button class="btn btn-primary" type="submit" [disabled]="addForm.invalid">
             Add New Character
           </button>
@@ -88,7 +92,6 @@ import { CharactersService } from '../services/characters.service';
 })
 export class AddCharacterComponent implements OnInit {
   public alignments: Alignment[] = [Alignment.GOOD, Alignment.BAD];
-  public currentSkill: string;
 
   public addForm: FormGroup;
 
@@ -103,6 +106,7 @@ export class AddCharacterComponent implements OnInit {
       }),
       affiliation: new FormControl(null, [Validators.required, Validators.minLength(5)]),
       alignment: new FormControl(null, Validators.required),
+      skills: new FormArray([], this.duplicateSkill.bind(this)),
     });
   }
 
@@ -118,11 +122,27 @@ export class AddCharacterComponent implements OnInit {
     // this.onReset();
   }
 
-  // public onAddSkill() {
-  //   this.character.skills.push(this.currentSkill);
-  //   this.currentSkill = null;
-  // }
-  //
+  public onAddSkill() {
+    const newSkill = new FormControl(null, [Validators.required]);
+    (this.addForm.get('skills') as FormArray).push(newSkill);
+  }
+
+  get skills() {
+    return (this.addForm.get('skills') as FormArray).controls;
+  }
+
+  public duplicateSkill(formArray: FormArray) {
+    if (this.checkDuplicates(formArray.value as string[])) {
+      return { duplication: true };
+    } else {
+      return null;
+    }
+  }
+
+  private checkDuplicates(array: string[]): boolean {
+    return array.filter((item, index) => array.indexOf(item) !== index).length > 0;
+  }
+
   // public onReset() {
   //   this.character = {
   //     skills: [],
