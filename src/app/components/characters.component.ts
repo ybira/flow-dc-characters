@@ -12,10 +12,7 @@ import { CharactersService } from '../services/characters.service';
     <div class="row">
       <app-filter></app-filter>
       <div class="row" style="flex-wrap: wrap">
-        <app-character
-          *ngFor="let character of characters"
-          [character]="character"
-        >
+        <app-character *ngFor="let character of characters" [character]="character">
           <h4>{{ character.name }}</h4>
         </app-character>
       </div>
@@ -40,25 +37,27 @@ import { CharactersService } from '../services/characters.service';
       h4 {
         text-align: center;
       }
-    `
-  ]
+    `,
+  ],
 })
 export class CharactersComponent implements OnInit {
   public characters: Character[];
   public fragment: string;
 
-  constructor(
-    private charactersService: CharactersService,
-    private route: ActivatedRoute
-  ) {}
+  constructor(private charactersService: CharactersService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(queryParams => {
-      this.characters = this.charactersService.fetchCharacters(
-        queryParams.filter
+    this.route.queryParams.subscribe((queryParams) => {
+      this.charactersService.fetchCharacters().subscribe(
+        (characters) => {
+          this.characters = characters;
+        },
+        (error) => {
+          console.log(error);
+        }
       );
     });
-    this.route.fragment.subscribe(fragment => {
+    this.route.fragment.subscribe((fragment) => {
       this.fragment = fragment;
     });
   }

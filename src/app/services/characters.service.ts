@@ -1,10 +1,12 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Alignment, Character } from '../model/character.model';
 import { LoggingService } from './logging.service';
 
 @Injectable({ providedIn: 'root' })
 export class CharactersService {
-  constructor(private loggingService: LoggingService) {}
+  constructor(private loggingService: LoggingService, private http: HttpClient) {}
 
   public characters: Character[] = [
     {
@@ -35,8 +37,8 @@ export class CharactersService {
     this.characters.push(character);
   }
 
-  public fetchCharacters(filter: string): Character[] {
-    return filter ? [...this.characters.filter((c) => c.alignment === filter)] : [...this.characters];
+  public fetchCharacters(): Observable<Character[]> {
+    return this.http.get<Character[]>('http://localhost:3000/api/v1/no-auth/characters');
   }
 
   public updateCharacter(id: number, character: Character) {
