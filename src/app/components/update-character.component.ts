@@ -136,8 +136,15 @@ export class UpdateCharacterComponent implements OnInit, OnCanDeactivate {
 
   public onUpdate() {
     this.allowNavigate = true;
-    this.charactersService.updateCharacter(this.character.id, this.character);
-    this.router.navigate(['characters']);
+    this.charactersService.updateCharacter(this.character.id, this.character).subscribe(
+      (char) => {
+        console.log(char);
+        this.router.navigate(['characters']);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   public canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
