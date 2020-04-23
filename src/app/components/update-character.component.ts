@@ -1,7 +1,9 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { OnCanDeactivate } from '../guards/can-deactivate.guard';
 import { Alignment, Character } from '../model/character.model';
 import { CharactersService } from '../services/characters.service';
@@ -82,6 +84,9 @@ import { CharactersService } from '../services/characters.service';
           <button class="btn btn-primary" type="button" [routerLink]="['/characters']">
             Cancel
           </button>
+          <div class="alert alert-danger" *ngIf="errors">
+            <p *ngFor="let error of errors">{{ error }}</p>
+          </div>
         </form>
       </div>
     </div>
@@ -105,6 +110,8 @@ export class UpdateCharacterComponent implements OnInit, OnCanDeactivate {
   public character: Character;
   public currentSkill: string;
   public allowNavigate: boolean;
+
+  public errors: string[];
 
   constructor(private charactersService: CharactersService, private router: Router, private route: ActivatedRoute) {}
 
@@ -135,16 +142,23 @@ export class UpdateCharacterComponent implements OnInit, OnCanDeactivate {
   }
 
   public onUpdate() {
+    this.errors = null;
     this.allowNavigate = true;
-    this.charactersService.updateCharacter(this.character.id, this.character).subscribe(
-      (char) => {
-        console.log(char);
-        this.router.navigate(['characters']);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.charactersService
+      .updateCharacter(this.character.id, this.character)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          return throwError(error.error.message);
+        })
+      )
+      .subscribe(
+        (char) => {
+          this.router.navigate(['characters']);
+        },
+        (error: string[]) => {
+          this.errors = error;
+        }
+      );
   }
 
   public canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
