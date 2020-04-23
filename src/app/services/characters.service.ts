@@ -2,17 +2,19 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 import { Alignment, Character } from '../model/character.model';
 import { LoggingService } from './logging.service';
 
 @Injectable({ providedIn: 'root' })
 export class CharactersService {
   private characters$: BehaviorSubject<Character[]> = new BehaviorSubject(null);
+  private apiUrl: string = environment.baseUrl;
 
   constructor(private loggingService: LoggingService, private http: HttpClient) {}
 
   public addCharacter(character: Character): Observable<Character> {
-    return this.http.post<Character>(`http://localhost:3000/api/v1/no-auth/characters`, character);
+    return this.http.post<Character>(this.apiUrl + `no-auth/characters`, character);
   }
 
   public fetchCharacters(alignment?: Alignment) {
@@ -24,7 +26,7 @@ export class CharactersService {
     }
 
     this.http
-      .get<Character[]>('http://localhost:3000/api/v1/no-auth/characters', {
+      .get<Character[]>(this.apiUrl + 'no-auth/characters', {
         params,
         headers: new HttpHeaders({ 'custom-flow-header': 'something' }),
       })
@@ -39,16 +41,16 @@ export class CharactersService {
   }
 
   public updateCharacter(id: number, character: Character): Observable<Character> {
-    return this.http.put<Character>(`http://localhost:3000/api/v1/no-auth/characters/${id}`, character);
+    return this.http.put<Character>(this.apiUrl + `no-auth/characters/${id}`, character);
   }
 
   public fetchCharacter(id: number): Observable<Character> {
-    return this.http.get<Character>(`http://localhost:3000/api/v1/no-auth/characters/${id}`);
+    return this.http.get<Character>(this.apiUrl + `no-auth/characters/${id}`);
   }
 
   public deleteCharacter(id: number): Observable<Character> {
     return this.http
-      .delete<Character>(`http://localhost:3000/api/v1/no-auth/characters/${id}`)
+      .delete<Character>(this.apiUrl + `no-auth/characters/${id}`)
       .pipe(tap(() => this.fetchCharacters()));
   }
 
