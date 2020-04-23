@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Character } from '../model/character.model';
+import { Alignment, Character } from '../model/character.model';
 import { LoggingService } from './logging.service';
 
 @Injectable({ providedIn: 'root' })
@@ -15,15 +15,27 @@ export class CharactersService {
     return this.http.post<Character>(`http://localhost:3000/api/v1/no-auth/characters`, character);
   }
 
-  public fetchCharacters() {
-    this.http.get<Character[]>('http://localhost:3000/api/v1/no-auth/characters').subscribe(
-      (characters) => {
-        this.characters$.next(characters);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+  public fetchCharacters(alignment?: Alignment) {
+    console.log(alignment);
+    let params: HttpParams = new HttpParams();
+
+    if (alignment) {
+      params = params.append('alignment', alignment);
+    }
+
+    this.http
+      .get<Character[]>('http://localhost:3000/api/v1/no-auth/characters', {
+        params,
+        headers: new HttpHeaders({ 'custom-flow-header': 'something' }),
+      })
+      .subscribe(
+        (characters) => {
+          this.characters$.next(characters);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 
   public updateCharacter(id: number, character: Character): Observable<Character> {

@@ -49,7 +49,7 @@ export class CharactersComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((queryParams) => {
-      this.charactersService.fetchCharacters();
+      this.charactersService.fetchCharacters(queryParams.filter);
     });
     this.route.fragment.subscribe((fragment) => {
       this.fragment = fragment;
