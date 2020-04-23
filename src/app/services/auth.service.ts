@@ -1,27 +1,34 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Role, User } from '../model/user.model';
+import { switchMap, tap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
+import { AuthResponse } from '../model/auth-response.model';
+import { User } from '../model/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private users: User[] = [
-    { id: 1, fullName: 'Admin Test', email: 'admin@test.com', role: Role.ADMIN },
-    { id: 2, fullName: 'Editor Test', email: 'editor@test.com', role: Role.EDITOR },
-    { id: 3, fullName: 'Reader Test', email: 'reader@test.com', role: Role.READER },
-  ];
   private loggedInUser$: BehaviorSubject<User> = new BehaviorSubject<User>(null);
 
-  public login(email: string): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
-      setTimeout(() => {
-        const user = this.users.find((u) => u.email === email);
-        if (user) {
-          this.loggedInUser$.next(user);
-          resolve(true);
-        }
-        reject(false);
-      }, 500);
-    });
+  constructor(private http: HttpClient) {}
+
+  public login(email: string, password: string): Observable<User> {
+    return this.http
+      .post<AuthResponse>(environment.baseUrl + 'auth/login', { email, password })
+      .pipe(
+        switchMap((resp) => {
+          console.log(resp);
+          const authHeader = new HttpHeaders({ Authorization: `Bearer ${resp.accessToken}` });
+          return this.http
+            .get<User>(environment.baseUrl + 'auth/user', { headers: authHeader })
+            .pipe(
+              tap((user) => {
+                this.loggedInUser$.next(user);
+                return user;
+              })
+            );
+        })
+      );
   }
 
   public logout() {

@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -30,6 +31,9 @@ import { AuthService } from '../services/auth.service';
           Login
         </button>
       </form>
+      <div class="alert alert-danger" *ngIf="errors">
+        <p *ngFor="let error of errors">{{ error }}</p>
+      </div>
     </div>
   `,
   styles: [
@@ -41,22 +45,29 @@ import { AuthService } from '../services/auth.service';
         width: 40%;
         margin-top: 10%;
       }
+
+      .alert {
+        margin-top: 1rem;
+        margin-bottom: 0;
+      }
     `,
   ],
 })
 export class LoginComponent implements OnInit {
+  public errors: string[];
+
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {}
 
   public onLogin(form: NgForm) {
-    this.authService
-      .login(form.value.email)
-      .then(() => {
+    this.authService.login(form.value.email, form.value.password).subscribe(
+      () => {
         this.router.navigate(['characters']);
-      })
-      .catch(() => {
-        console.log('invalid email');
-      });
+      },
+      (error: HttpErrorResponse) => {
+        this.errors = error.error.message;
+      }
+    );
   }
 }

@@ -23,15 +23,15 @@ const routes: Routes = [
   },
   {
     path: 'characters/new',
-    // canActivate: [AuthGuard, RoleGuard],
+    canActivate: [AuthGuard, RoleGuard],
     data: { roles: [Role.ADMIN] },
     component: AddCharacterComponent,
   },
   {
     path: 'characters',
     component: CharactersComponent,
-    // canActivate: [AuthGuard],
-    // canActivateChild: [RoleGuard],
+    canActivate: [AuthGuard],
+    canActivateChild: [RoleGuard],
     children: [
       {
         path: ':id',
@@ -44,8 +44,8 @@ const routes: Routes = [
   {
     path: 'characters/edit/:id',
     component: UpdateCharacterComponent,
-    // canActivate: [AuthGuard, RoleGuard],
-    // canDeactivate: [CanDeactivateGuard],
+    canActivate: [AuthGuard, RoleGuard],
+    canDeactivate: [CanDeactivateGuard],
     resolve: { character: CharacterResolver },
     data: { roles: [Role.EDITOR, Role.ADMIN] },
   },
