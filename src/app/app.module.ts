@@ -1,10 +1,11 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
+import { AuthInterceptor } from './auth.interceptor';
 import { AddCharacterComponent } from './components/add-character.component';
 import { CharacterDetailsComponent } from './components/character-details.component';
 import { CharacterComponent } from './components/character.component';
@@ -41,7 +42,13 @@ import { AlignmentPipe } from './pipes/alignment.pipe';
     AlignmentPipe,
   ],
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, AppRoutingModule, HttpClientModule],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

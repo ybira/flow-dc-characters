@@ -19,15 +19,12 @@ export class AuthService {
         switchMap((resp) => {
           localStorage.setItem('accessToken', resp.accessToken);
           localStorage.setItem('refreshToken', resp.refreshToken);
-          const authHeader = new HttpHeaders({ Authorization: `Bearer ${localStorage.getItem('accessToken')}` });
-          return this.http
-            .get<User>(environment.baseUrl + 'auth/user', { headers: authHeader })
-            .pipe(
-              tap((user) => {
-                this.loggedInUser$.next(user);
-                return user;
-              })
-            );
+          return this.http.get<User>(environment.baseUrl + 'auth/user').pipe(
+            tap((user) => {
+              this.loggedInUser$.next(user);
+              return user;
+            })
+          );
         })
       );
   }
