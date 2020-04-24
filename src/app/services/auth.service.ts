@@ -30,6 +30,20 @@ export class AuthService {
       );
   }
 
+  public fetchCurrentUserOnApplicationBootstrap(): Promise<any> {
+    return new Promise<any>((resolve) => {
+      this.http.get<User>(environment.baseUrl + 'auth/user').subscribe(
+        (user) => {
+          this.loggedInUser$.next(user);
+          resolve();
+        },
+        () => {
+          resolve();
+        }
+      );
+    });
+  }
+
   public logout() {
     this.loggedInUser$.next(null);
     localStorage.removeItem('accessToken');

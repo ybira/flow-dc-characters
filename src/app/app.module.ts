@@ -1,7 +1,7 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
@@ -21,6 +21,11 @@ import { HighlightDirective } from './directives/highlight.directive';
 import { UnlessDirective } from './directives/unless.directive';
 import { SkillsPipe } from './pipes/skills.pipe';
 import { AlignmentPipe } from './pipes/alignment.pipe';
+import { AuthService } from './services/auth.service';
+
+export function appInit(provider: AuthService) {
+  return (): Promise<any> => provider.fetchCurrentUserOnApplicationBootstrap();
+}
 
 @NgModule({
   declarations: [
@@ -46,6 +51,12 @@ import { AlignmentPipe } from './pipes/alignment.pipe';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInit,
+      deps: [AuthService],
       multi: true,
     },
   ],

@@ -15,7 +15,7 @@ export class CharactersService {
   constructor(private loggingService: LoggingService, private http: HttpClient) {}
 
   public addCharacter(character: Character): Observable<Character> {
-    return this.http.post<Character>(this.apiUrl + `no-auth/characters`, character);
+    return this.http.post<Character>(this.apiUrl + `characters`, character);
   }
 
   public fetchCharacters(alignment?: Alignment) {
@@ -43,17 +43,15 @@ export class CharactersService {
   }
 
   public updateCharacter(id: number, character: Character): Observable<Character> {
-    return this.http.put<Character>(this.apiUrl + `no-auth/characters/${id}`, character);
+    return this.http.put<Character>(this.apiUrl + `characters/${id}`, character);
   }
 
   public fetchCharacter(id: number): Observable<Character> {
-    return this.http.get<Character>(this.apiUrl + `no-auth/characters/${id}`);
+    return this.http.get<Character>(this.apiUrl + `characters/${id}`);
   }
 
   public deleteCharacter(id: number): Observable<Character> {
-    return this.http
-      .delete<Character>(this.apiUrl + `no-auth/characters/${id}`)
-      .pipe(tap(() => this.fetchCharacters()));
+    return this.http.delete<Character>(this.apiUrl + `characters/${id}`).pipe(tap(() => this.fetchCharacters()));
   }
 
   get characters(): Observable<Character[]> {
