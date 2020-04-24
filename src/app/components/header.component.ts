@@ -22,24 +22,21 @@ import { AuthService } from '../services/auth.service';
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li>
-            <a (click)="onLogout()"
-              >Logged in as: {{ (user$ | async).fullName }} (LOGOUT)</a
-            >
+            <a (click)="onLogout()">Logged in as: {{ (user$ | async).fullName }} (LOGOUT)</a>
           </li>
         </ul>
       </div>
     </nav>
-  `
+  `,
 })
 export class HeaderComponent implements OnInit {
   public user$: Observable<User> = this.authService.user;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService) {}
 
   ngOnInit() {}
 
   public onLogout() {
     this.authService.logout();
-    this.router.navigate(['login']);
   }
 }
