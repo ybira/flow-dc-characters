@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Alignment, Character } from '../model/character.model';
+import { PagedResponse } from '../model/paged-response.model';
 import { LoggingService } from './logging.service';
 
 @Injectable({ providedIn: 'root' })
@@ -22,16 +23,18 @@ export class CharactersService {
 
     if (alignment) {
       params = params.append('alignment', alignment);
+      params = params.append('page', '1');
+      params = params.append('pagePer', '100');
     }
 
     this.http
-      .get<Character[]>(this.apiUrl + 'no-auth/characters', {
+      .get<PagedResponse<Character>>(this.apiUrl + 'characters', {
         params,
         headers: new HttpHeaders({ 'custom-flow-header': 'something' }),
       })
       .subscribe(
         (characters) => {
-          this.characters$.next(characters);
+          this.characters$.next(characters.embedded);
         },
         (error) => {
           console.log(error);
