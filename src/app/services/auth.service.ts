@@ -17,8 +17,9 @@ export class AuthService {
       .post<AuthResponse>(environment.baseUrl + 'auth/login', { email, password })
       .pipe(
         switchMap((resp) => {
-          console.log(resp);
-          const authHeader = new HttpHeaders({ Authorization: `Bearer ${resp.accessToken}` });
+          localStorage.setItem('accessToken', resp.accessToken);
+          localStorage.setItem('refreshToken', resp.refreshToken);
+          const authHeader = new HttpHeaders({ Authorization: `Bearer ${localStorage.getItem('accessToken')}` });
           return this.http
             .get<User>(environment.baseUrl + 'auth/user', { headers: authHeader })
             .pipe(

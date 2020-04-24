@@ -18,7 +18,6 @@ export class CharactersService {
   }
 
   public fetchCharacters(alignment?: Alignment) {
-    console.log(alignment);
     let params: HttpParams = new HttpParams();
 
     if (alignment) {
