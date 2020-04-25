@@ -17,8 +17,10 @@ import { LoginComponent } from './components/login.component';
 import { ObservableComponent } from './components/observable.component';
 import { UpdateCharacterComponent } from './components/update-character.component';
 import { AlignmentDirective } from './directives/alignment.directive';
+import { ConfirmDeleteDirective } from './directives/confirm-delete.directive';
 import { HighlightDirective } from './directives/highlight.directive';
 import { UnlessDirective } from './directives/unless.directive';
+import { ConfirmDeleteModalComponent } from './modals/confirm-delete-modal.component';
 import { SkillsPipe } from './pipes/skills.pipe';
 import { AlignmentPipe } from './pipes/alignment.pipe';
 import { AuthService } from './services/auth.service';
@@ -45,6 +47,8 @@ export function appInit(provider: AuthService) {
     ObservableComponent,
     SkillsPipe,
     AlignmentPipe,
+    ConfirmDeleteModalComponent,
+    ConfirmDeleteDirective,
   ],
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, AppRoutingModule, HttpClientModule],
   providers: [

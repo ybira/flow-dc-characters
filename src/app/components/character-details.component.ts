@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { ConfirmDeleteDirective } from '../directives/confirm-delete.directive';
+import { ConfirmDeleteModalComponent } from '../modals/confirm-delete-modal.component';
 import { Character } from '../model/character.model';
 import { CharactersService } from '../services/characters.service';
 
@@ -18,10 +21,12 @@ import { CharactersService } from '../services/characters.service';
       <button class="btn btn-primary" (click)="onUpdate()">
         Update
       </button>
-      <button class="btn btn-danger" (click)="onDelete()">
+      <button class="btn btn-danger" (click)="toggleModal()">
         Delete
       </button>
     </div>
+
+    <ng-template appConfirmDelete></ng-template>
   `,
   styles: [
     `
@@ -34,10 +39,18 @@ import { CharactersService } from '../services/characters.service';
     `,
   ],
 })
-export class CharacterDetailsComponent implements OnInit {
+export class CharacterDetailsComponent implements OnInit, OnDestroy {
   public character: Character;
+  @ViewChild(ConfirmDeleteDirective, { static: false }) modalHost: ConfirmDeleteDirective;
 
-  constructor(private charactersService: CharactersService, private route: ActivatedRoute, private router: Router) {}
+  public subscriptions: Subscription[] = [];
+
+  constructor(
+    private charactersService: CharactersService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private componentFactoryResolver: ComponentFactoryResolver
+  ) {}
 
   ngOnInit() {
     this.route.data.subscribe((data) => {
@@ -51,6 +64,10 @@ export class CharacterDetailsComponent implements OnInit {
     });
   }
 
+  public toggleModal() {
+    this.openConfirmModal();
+  }
+
   public onDelete() {
     this.charactersService.deleteCharacter(this.character.id).subscribe(
       (char) => {
@@ -62,5 +79,28 @@ export class CharacterDetailsComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  public openConfirmModal() {
+    const modalFactory = this.componentFactoryResolver.resolveComponentFactory(ConfirmDeleteModalComponent);
+    this.modalHost.viewContainerRef.clear();
+    const modal = this.modalHost.viewContainerRef.createComponent(modalFactory);
+
+    modal.instance.name = this.character.name;
+    this.subscriptions.push(
+      modal.instance.close.subscribe(() => {
+        this.modalHost.viewContainerRef.clear();
+      })
+    );
+
+    this.subscriptions.push(
+      modal.instance.confirm.subscribe(() => {
+        this.onDelete();
+      })
+    );
+  }
+
+  public ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 }
